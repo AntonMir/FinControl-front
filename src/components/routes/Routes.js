@@ -2,7 +2,8 @@ import React from 'react'
 // routes
 import { Switch, Route, Redirect } from 'react-router-dom'
 // components
-import AuthPage from '@components/authPage/AuthPage.js';
+import AuthPage from '@components/authpage/authpage.js';
+import WelcomePage from '@content/welcome/welcome.js'
 // import CreatePage from '@components/createPage/CreatePage.js';
 // import DetailPage from '@components/detailPage/DetailPage.js';
 // import LinksPage from '@components/linksPage/LinksPage.js';
@@ -25,8 +26,9 @@ export default function useRoutes(isAuthenticated) {
 
     return (
         <Switch>
-                <Route exact path="/" component={AuthPage}/>
-                <Redirect to="/"/>
+            <Route exact path="/" component={WelcomePage}/>
+            <Route exact path="/auth" component={AuthPage}/>
+            <Redirect to="/"/>
         </Switch>
     )
 }

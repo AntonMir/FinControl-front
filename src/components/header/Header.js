@@ -1,64 +1,48 @@
 import {useContext} from 'react';
-// Link
-import { Link } from 'react-router-dom';
+// components
+import Logo from '@header/elements/logo.js';
+import Nav from '@header/elements/nav.js';
+import User from '@header/elements/user.js';
+import LogOutBtn from '@header/elements/logoutbtn.js';
+import AuthBtns from '@header/elements/authbtns.js';
 // context
-import {AuthContext} from '@src/context/AuthContext.js';
-// img
-import logo from '@img/header/logo.png';
-import user from '@img/header/user.svg';
+import {AuthContext} from '@src/context/authcontext.js';
 // styles
-import './header.scss';
+import styled from 'styled-components';
+
 
 export default function Header() {
 
-    try{
-        const auth = useContext(AuthContext);
+    const auth = useContext(AuthContext);
 
-        const logoutHandler = (event) => {
-            event.preventDefault();
-            auth.logout();
-        }
-
-
+    if(auth.isAuthenticated) {
         return (
-            <div className="header">
-                
-                <Link className="header-logo" to="/">
-                    <img src={logo} alt="logo"/>
-                    <h1>Finance Control</h1>
-                </Link>
-
-                <div className="header-nav-wrapper">
-                    <ul className="header-nav">
-                        <li className="header-nav-el">
-                            <Link to="/">Расходы</Link>
-                        </li>
-                        <li className="header-nav-el">
-                            <Link to="/">Доходы</Link>
-                        </li>
-                        <li className="header-nav-el">
-                            <Link to="/">График</Link>
-                        </li>
-                        {/* <li className="header-nav-el">
-                            <Link to="/">Финансовый календарь</Link>
-                        </li> */}
-                       
-                    </ul>
-                </div>
-
-                <Link className="header-user-icon" to="auth">
-                    <img src={user} alt="user"/>
-                    <p className="user-name">
-                        {auth.userName ? auth.userName.toUpperCase() : ''}
-                    </p>
-                </Link>
-
-                <Link className="logout-btn" to="/" onClick={logoutHandler}>Выйти</Link>
-
-            </div>
+            <HeaderStyled>
+                <Logo />
+                <Nav />
+                <User />
+                <LogOutBtn /> 
+            </HeaderStyled>
         )
-    } catch(error) {
-        console.error('---', 'ERROR!!! - ', error);
     }
+
+    return (
+        <HeaderStyled>
+            <Logo />
+            <AuthBtns />      
+        </HeaderStyled>
+    )   
+
 }
 
+const HeaderStyled = styled.div`
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    background-color: #444;
+    height: 80px;
+    padding: 0 3%;
+`;

@@ -1,15 +1,15 @@
 // routes
 import {BrowserRouter as Router} from 'react-router-dom';
 // components
-import useRoutes from '@components/routes/Routes.js'
-import Header from '@components/header/Header.js';
+import useRoutes from '@components/routes/routes.js'
+import Header from '@components/header/header.js';
 // hooks
 import {useAuth} from '@src/hooks/auth.hook.js'
 // context
-import {AuthContext} from '@src/context/AuthContext.js'
+import {AuthContext} from '@src/context/authcontext.js'
 // styles
-import './app.scss';
 import 'materialize-css';
+
 
 
 
@@ -30,11 +30,10 @@ export default function App() {
             value={{token, userId, userName, login, logout, isAuthenticated}}
         >
             <Router>
-                { isAuthenticated && <Header /> }
+                <Header />
+                {/* { isAuthenticated && <Header /> } */}
 
-                <section className="container">
                     {routes}
-                </section>
 
             </Router>
 

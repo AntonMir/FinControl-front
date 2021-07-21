@@ -3,11 +3,11 @@ import React, {useState, useEffect, useContext} from 'react';
 import {useHttp} from '../../hooks/http.hook.js'
 import {useMessage} from '../../hooks/message.hook.js'
 // context
-import {AuthContext} from '@src/context/AuthContext.js'
+import {AuthContext} from '@src/context/authcontext.js'
 // img
 import logo from '@img/header/logo.png';
 // styles
-import './authPage.scss';
+import './authpage.scss';
 
 
 export default function AuthPage() {
