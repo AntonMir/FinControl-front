@@ -42,7 +42,7 @@ const HeaderStyled = styled.div`
     align-items: center;
     justify-content: space-between;
     color: #fff;
-    background-color: #444;
+    background-color: #292929;
     height: 80px;
     padding: 0 3%;
 `;

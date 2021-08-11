@@ -26,16 +26,16 @@ const CustomLink = styled(Link)`
     user-select: none;
     height: 75%;
 
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 `;
 
 const IMG = styled.img`
     width: auto;
-    height: 75%;
+    height: 65%;
     margin-right: 10px;
 `;
 
@@ -44,7 +44,7 @@ const H1 = styled.h1`
     color: #AAE03D;
     padding: 0 0 5px 0;
     margin: 0;
-    font-size: 25px;
+    font-size: 20px;
     white-space: nowrap;
 `;
 

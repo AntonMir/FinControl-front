@@ -11,8 +11,6 @@ import {AuthContext} from '@src/context/authcontext.js'
 import 'materialize-css';
 
 
-
-
 export default function App() {
 
     // берем из хука аутентификации
@@ -24,19 +22,15 @@ export default function App() {
     const routes = useRoutes(isAuthenticated);
 
     return (
-        // AuthContext - является контекстом, но он должен быть обязательно провайдером
+        // AuthContext - является контекстом, но он должен быть обязательно провайдером 
         <AuthContext.Provider 
             // передаем в наш контекст матоды и переменные из хука аутентификации
             value={{token, userId, userName, login, logout, isAuthenticated}}
         >
             <Router>
                 <Header />
-                {/* { isAuthenticated && <Header /> } */}
-
-                    {routes}
-
+                {routes}
             </Router>
-
         </AuthContext.Provider>
     )
 }

@@ -1,133 +1,99 @@
-import React, {useState, useEffect, useContext} from 'react';
-// castom hook
-import {useHttp} from '../../hooks/http.hook.js'
-import {useMessage} from '../../hooks/message.hook.js'
-// context
-import {AuthContext} from '@src/context/authcontext.js'
+import React, {useState} from 'react';
+// conponents
+import Login from '@components/authpage/elements/login.js';
+import Register from '@components/authpage/elements/register.js';
+// redux
+import { store } from '@store/store.js'
 // img
-import logo from '@img/header/logo.png';
-// styles
-import './authpage.scss';
+import background from '@assets/img/welcome/welcome_background.png';
+/// styled
+import styled from 'styled-components';
 
 
 export default function AuthPage() {
 
-    // 1 элемент затеняется, 2 выделяется
-    const [targetOpacity, setTargetOpacity] = useState('login');
-
-    // используем контекст кторый создали (AuthContext)
-    // это нужно, чтобы воспользоваться методом login
-    const auth = useContext(AuthContext)
-
-    // кастомный хук для вывоа ошибки
-    const message = useMessage();
-
-    // кастомный хук для отправки данных
-    const {loading, error, request, clearError} = useHttp();
-
-    // state для email и pass
-    const [form, setForm] = useState({email: '', password: ''});
-
-    // обработаем ошибку
-    useEffect(() => {
-        message(error)
-        clearError()
-    }, [error, message, clearError]);
-
-    // сохраняем в наш state email и password
-    const changeHandler = (event) => {
-        setForm({ ...form, [event.target.name]: event.target.value})
+    const [chosenForm, setChosenForm] = useState(store.getState().authPageChosenForm);
+   
+    const choseLogin = () => {
+        setChosenForm('login');
     }
 
-    // вызывает хук useHttp, отправляет запрос на сервер,
-    // получает ответ в виде промиса и выводит его на экран
-    // A) при регистрации
-    const registerHandler = async () => {
-        try {
-            // регистрируемся
-            const regData = await request('/api/auth/register', 'POST', {...form})
-            message(regData.message)
-            // если зарегались успешно, сразу вхдим
-            const loginData = await request('/api/auth/login', 'POST', {...form})
-            auth.login(loginData.token, loginData.userId, loginData.userName)
-        } catch(e) {}
+    const choseRegister = () => {
+        setChosenForm('register');
     }
-    // B) при авторизации
-    const loginHandler = async () => {
-        try {
-            const data = await request('/api/auth/login', 'POST', {...form})
-            auth.login(data.token, data.userId, data.userName)
-        } catch(e) {}
-    }
+
+    store.subscribe(() => setChosenForm(store.getState().authPageChosenForm))
 
     return (
-        <div className="auth-page">
-            <div className="auth-title" to="/">
-                <img src={logo} alt="logo"/>
-                <h1>Welcome to Finance Control</h1>
-            </div>
-
-            <div className="auth-forms">
-
-                <div 
-                    onMouseEnter={() => setTargetOpacity('login')}
-                    className={targetOpacity === 'login' ? "login active" : "login"} 
-                >
-                    <h1>Вход</h1>
-                    <div className="login-form">
-                        <input 
-                            placeholder="Email" 
-                            id="login-email" 
-                            type="text"
-                            name="email" 
-                            onChange={changeHandler}
-                        />
-
-                        <input 
-                            placeholder="Password" 
-                            id="login-password" 
-                            type="password" 
-                            name="password" 
-                            onChange={changeHandler}
-                        />
-                        <button 
-                            onClick={loginHandler}
-                            disabled={loading}
-                        >Войти</button>
-                    </div>
-                </div>
-
-                <div 
-                    className={targetOpacity === 'register' ? "register active" : "register"} 
-                    onMouseEnter={() => setTargetOpacity('register')}
-                >
-                    <h1>Регистрация</h1>
-                    <div className="register-form">
-                        <input 
-                            placeholder="Email" 
-                            id="register-email" 
-                            type="text"
-                            name="email" 
-                            onChange={changeHandler}
-                        />
-
-                        <input 
-                            placeholder="Password" 
-                            id="register-password" 
-                            type="password" 
-                            name="password" 
-                            onChange={changeHandler}
-                        />
-                        <button 
-                            onClick={registerHandler}
-                            disabled={loading}
-                        >Зарегистрироваться</button>
-                    </div>
-                </div>
-           
-            </div>
-
-        </div>
+        <AuthPageStyled>
+            <AuthForms>
+                <ButtonsWrapper>
+                    <Button 
+                        style={chosenForm === 'login' ? {borderBottom: 'none', borderRight: 'none'} : {}}
+                        onClick={choseLogin}
+                        >
+                        Вход
+                    </Button>
+                    <Button 
+                        style={chosenForm === 'register' ? {borderBottom: 'none', borderLeft: 'none'} : {}} 
+                        onClick={choseRegister}>
+                        Регистрация
+                    </Button>
+                </ButtonsWrapper>
+                {chosenForm === 'login' ? <Login/> : <Register/>}
+            </AuthForms>
+        </AuthPageStyled>
     )
+   
 }
 
+
+const AuthPageStyled = styled.div`
+    background-image: url(${background});
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    padding: 5%;
+    height: calc(100vh - 80px);
+`;
+
+const AuthForms = styled.div`
+    margin: 0 auto;
+    padding: 0;
+    max-width: 500px;
+    background-color: rgba(00, 00, 00, 0.3);
+`;
+
+const ButtonsWrapper = styled.div`
+    display: flex;
+    margin: 0;
+    z-index: 1;
+`;
+
+const Button = styled.div`
+    text-align: center;
+    font-style: normal;
+    font-weight: 100;
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+    border: 1px #aaa solid;
+    padding: 10px 40px;
+    flex: 1;
+
+    &:nth-of-type(1) {
+        border-radius: 5px 0 5px 0;
+        -webkit-border-radius: 5px 0 5px 0;
+        -moz-border-radius: 5px 0 5px 0;
+        -ms-border-radius: 5px 0 5px 0;
+        -o-border-radius: 5px 0 5px 0;
+    }
+    &:nth-of-type(2) {
+        border-radius: 0 5px 0 5px;
+        -webkit-border-radius: 0 5px 0 5px;
+        -moz-border-radius: 0 5px 0 5px;
+        -ms-border-radius: 0 5px 0 5px;
+        -o-border-radius: 0 5px 0 5px;
+    }
+`;

@@ -1,17 +1,38 @@
 // Link
 import { Link } from 'react-router-dom';
+// redux
+import { store } from '@store/store.js'
+import { changeAuthPageChosenForm } from '@store/actions.js'
 // img
 import background from '@assets/img/welcome/welcome_background.png'
 // styled
 import styled from 'styled-components';
 
 
+
+
 export default function WelcomePage() {
+
+    const goToAuthPageLogin = () => {
+        store.dispatch(changeAuthPageChosenForm('login'))
+    }
+    
+    const goToAuthPageRegister = () => {
+        store.dispatch(changeAuthPageChosenForm('register'))
+    }
 
     return (
         <Welcome>
-            <H1>Привет дорогой друг, данное приложение поможет тебе контролировать свои финансы. Давай начнем:</H1>
-            <CustomLink to="/auth">Вход/Регистрация</CustomLink>
+            <H1>
+                Привет дорогой друг, данное приложение поможет 
+                тебе контролировать свои финансы. 
+                Чтобы начать пользоваться
+                <span> </span>
+                <CustomLink onClick={goToAuthPageLogin} to="/auth">войди</CustomLink>
+                <span> или </span>
+                <CustomLink onClick={goToAuthPageRegister} to="/auth">зарегистрируйся</CustomLink>
+                .
+            </H1>
         </Welcome>
     )
 }
@@ -28,15 +49,33 @@ const Welcome = styled.div`
 `;
 
 const H1 = styled.h1`
-    margin: 0 0 30px 0;
-    padding: 0;
+    text-align: center;
+    font-size: 30px;
+    margin: 0 10%;
+    padding: 50px;
 `;
 
 const CustomLink = styled(Link)`
-    border: #000 1px solid;
-    padding: 10px 20px;
-    color: #fff;
+    position: relative;
+    color: #AAE03D;
     cursor: pointer;
-    user-select: none;
-    white-space: nowrap;
+
+    &:before, &:after {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        border-bottom: 1px solid #AAE03D;
+        content: "";
+        transition: all 0.3s ease;
+    }
+
+    &:hover {
+        &:before, &:after {
+            width: 50%;
+        }
+        &:after {
+            transform: translateX(-99%);
+        }
+    }
 `;

@@ -1,27 +1,34 @@
-import {useContext} from 'react';
-// context
-import {AuthContext} from '@src/context/authcontext.js'
 // Link
 import { Link } from 'react-router-dom';
+// redux
+import { store } from '@store/store.js'
+import { changeAuthPageChosenForm } from '@store/actions.js'
 // styled
 import styled from 'styled-components';
+
+const goToAuthPageLogin = () => {
+    store.dispatch(changeAuthPageChosenForm('login'))
+}
+
+const goToAuthPageRegister = () => {
+    store.dispatch(changeAuthPageChosenForm('register'))
+}
 
 
 export default function AuthBtns() {
 
-    const auth = useContext(AuthContext);
 
     return (
         <div>
-            <CustomLink to="/auth">Войти</CustomLink>
+            <CustomLink onClick={goToAuthPageLogin} to="/auth">Вход</CustomLink>
             <span>/</span>
-            <CustomLink to="/auth">Регистрация</CustomLink>
+            <CustomLink onClick={goToAuthPageRegister} to="/auth">Регистрация</CustomLink>
         </div>
     )
 }
 
 const CustomLink = styled(Link)`
-    margin: 0 20px;
+    margin: 0 10px;
     color: #fff;
     cursor: pointer;
     user-select: none;

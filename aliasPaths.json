@@ -7,7 +7,9 @@
         "@img/*": ["assets/img/*"],
         "@header/*": ["src/components/header/*"],
         "@content/*": ["src/components/content/*"],
-        "@assets/*": ["assets/*"]
+        "@assets/*": ["assets/*"],
+        "@hooks/*": ["src/hooks/*"],
+        "@store/*": ["src/store/*"]
       }
     }
   }
